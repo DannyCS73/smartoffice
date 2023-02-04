@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Router , Route, Link} from 'react-router-dom' 
+import Login from "./Login.js"
+import Home from "./Home.js"
+import NavBar from './NavBar.js';
+import Blockchain from './Pages/Blockchain/Blockchain.js';
+import Validate from './Pages/Validate/Validate.js';
+import Wallet from './Pages/Wallet/Wallet.js';
+import Validators from './Pages/Validators/Validators.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+    <Routes>
+          <Route exact path="/" element={<Login />}/>
+          <Route exact path="/home" element={<Home />}/>
+          <Route exact path="/test" element={<NavBar />}/>
+          <Route exact path="/blockchain" element={<Blockchain />}/>
+          <Route exact path="/validate" element={<Validate />}/>
+          <Route exact path="/wallet" element={<Wallet />}/>
+          <Route exact path="/validators" element={<Validators />}/>
+    </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
