@@ -29,9 +29,11 @@ export default function Validate(){
             <div> 
                 <NavBar />
             </div>
-            <Row xs={1} md={4} className="g-4">
-                {blocks}
-            </Row>
+            <div className="blocks-div">
+                <Row xs={1} md={4} className="g-4">
+                    {blocks}
+                </Row>
+            </div>
             </div>
         )
 }

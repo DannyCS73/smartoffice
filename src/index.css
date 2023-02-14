@@ -17,6 +17,18 @@ p{
   display: flex;
 }
 
+.blocks-div{
+  overflow: scroll;
+  height: 100vh;
+
+}
+
+.val-block-text{
+  font-size: 10px;
+  height: 40vh;
+  overflow: scroll;
+}
+
 .timer{
   margin-top: 10px;
   font-size: 20px;
