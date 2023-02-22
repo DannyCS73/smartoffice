@@ -2,70 +2,46 @@ body {
   margin: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1{
+    font-family: 'Poppins';
+    font-size: 20px;
 }
 
-p{
-  font-size: 20px;
+.menu-item{
   font-family: 'Poppins';
-  font-style: normal;
-}
-
-.custom-container{
-  display: flex;
-}
-
-.blocks-div{
-  overflow: scroll;
-  height: 100vh;
-
-}
-
-.val-block-text{
-  font-size: 10px;
-  height: 40vh;
-  overflow: scroll;
-}
-
-.timer{
-  margin-top: 10px;
-  font-size: 20px;
-}
-
-.val-table{
-  height: 100vh;
-  overflow: scroll;
-  margin-top: 10px;
-}
-
-th{
   font-size: 15px;
-  font-family: 'Poppins';
-  font-style: normal;
 }
 
-td{
-  font-size: 20px;
-  font-family: 'Poppins';
-  font-style: normal;
-}
-
-th,td{
-  padding: 10px;
-}
-
-.validators-page{
-  margin-left: 50px;
-}
-
-.list_element{
-  margin-left: 3px;
-}
-
-.blocks{
+.menu{
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.menu-collapsed{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  
+}
+
+.button{
+      background-color: transparent;
+      background-repeat: no-repeat;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+      font-size: 30px;
+      margin-top: 0.7vh;
+}
+
+.widget-title{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(192, 192, 192, 1);
+  width: 65%;
+}
+
+
+
