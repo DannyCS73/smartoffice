@@ -2,14 +2,29 @@ import React , {useState} from "react";
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
 import { Typography } from "@mui/material";
 import {MdDashboard, MdVerifiedUser, MdMenu} from "react-icons/md";
-import {FaUser, FaInfoCircle} from "react-icons/fa";
+import {FaUser, FaInfoCircle, FaWallet} from "react-icons/fa";
 import {HiCube} from "react-icons/hi";
 import {IoLogOut} from "react-icons/io5";
-import {AiFillCaretLeft, AiFillCaretRight} from "react-icons/ai"
+import {AiOutlineMenuUnfold, AiOutlineMenuFold} from "react-icons/ai"
+import {useNavigate} from "react-router-dom";
 
 export default function NavBar(){
     const { collapseSidebar } = useProSidebar();
     const [collapsed, setCollapsed] = useState(false)
+
+    let navigate = useNavigate(); 
+
+    function navToDashBoard(){
+      navigate('/dashboard')
+    }
+
+    function navToLogOn(){
+        navigate('/')
+    }
+
+    function navToValidators(){
+        navigate('/validators')
+    }
 
     return (
         <div>
@@ -21,29 +36,31 @@ export default function NavBar(){
                         setCollapsed(prev => !prev)
                         collapseSidebar()
                         }}>
-                    { collapsed ? <i> < AiFillCaretRight/> </i> : <i> <AiFillCaretLeft/> </i>}
+                    { collapsed ? <i> <AiOutlineMenuUnfold /> </i> : <i> <AiOutlineMenuFold/> </i>}
                     </button>
                 </div>
 
                 <Menu className="menu-item">
-                    <MenuItem icon={<MdDashboard/>}> 
+                    <MenuItem icon={<MdDashboard/>} onClick={navToDashBoard}> 
                         Company Dashboard 
                     </MenuItem>
-                    <MenuItem icon={<FaUser/>}> 
-                        User Profile 
-                    </MenuItem>
                     <SubMenu label="Blockchain" icon={<HiCube/>}>
-                        <MenuItem icon={<MdVerifiedUser/>}> 
+                        <MenuItem icon={<FaWallet/>}> 
+                            Company Wallet
+                        </MenuItem>
+                        <MenuItem icon={<MdVerifiedUser/>} onClick={navToValidators}> 
                                 Validators
                         </MenuItem>
                         <MenuItem icon={<FaInfoCircle/>}> 
                             FAQ
                         </MenuItem>
                     </SubMenu>
-                    <MenuItem icon={<IoLogOut/>}> 
+                    <MenuItem icon={<FaUser/>}> 
+                        User Profile 
+                    </MenuItem>
+                    <MenuItem icon={<IoLogOut/>} onClick={navToLogOn}> 
                         Log Out 
                     </MenuItem>
-
                 </Menu>
             </Sidebar>
             </div>

@@ -1,0 +1,20 @@
+.form{
+    margin-top: 2vh;
+    margin-right: 10vw;
+}
+
+.form-element {
+    margin-top: 5vh;
+}
+
+.name{
+    width: 20vw;
+}
+
+.select{
+    width: 20vw;
+}
+
+.roomID{
+    width: 20vw;
+}
