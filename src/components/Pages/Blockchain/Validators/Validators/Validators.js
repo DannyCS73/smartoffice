@@ -1,8 +1,8 @@
 import React from "react";
-import NavBar from "../../Nav-Bar/sidebar";
-import TopBar from "../../Nav-Bar/topbar";
+import NavBar from "../../../../Nav-Bar/sidebar";
+import TopBar from "../../../../Nav-Bar/topbar";
 
-import ValidatorsTable from "../../Tables/ValidatorsTable";
+import ValidatorsTable from "../../../../Tables/ValidatorsTable";
 
 export default function Validators(){
     return(

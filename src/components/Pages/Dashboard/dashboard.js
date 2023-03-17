@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../../Nav-Bar/sidebar";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Typography, Button } from "@mui/material";
 import UserWidget from "./Dash-Components/Dash-User";
 import DevicesWidget from "./Dash-Components/Dash-Devices";
 import TopBar from "../../Nav-Bar/topbar";
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import EditWidget from "./Dash-Components/Dash-Edit";
 import ActiveSensorsGraph from "./Graphs/ActiveSensorsGraph";
 import BlocksMinedGraph from "./Graphs/BlocksMinedGraph";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import WalletIcon from '@mui/icons-material/Wallet';
+import {useNavigate} from "react-router-dom";
 
 
 export default function Dashboard(){
+
+    let navigate = useNavigate(); 
+
 
     const [sensorCount,setSensorCount] = useState()
     const [companyID,setCompanyID] = useState()
@@ -30,6 +29,10 @@ export default function Dashboard(){
         })
     },[])
 
+    function navToConnect(){
+        navigate('/connect')
+      }
+
 
     return (
         <div style={{ display: 'flex', height: "100vh"}}>
@@ -37,6 +40,18 @@ export default function Dashboard(){
             <div style={{width: "100vw"}}>
                 <TopBar title="Company Dashboard" isAddOption = {false} isDashboard = {true} name={companyName} />
                 <Box sx={{ px: 10 }}>
+                        <div className="centre">
+                            <div style={{"display": "flex"}} >
+                                <Typography variant="h5">
+                                    Blockchain Status : 
+                                </Typography>
+                                <Typography variant="h5" className="connected">
+                                    Valid
+                                </Typography>
+                            </div>
+                        </div>
+               
+
                     <Grid container spacing={2} justifyContent="center" sx={{ my: 4 }}>
                         <Grid item xs={4}>
                             <DevicesWidget

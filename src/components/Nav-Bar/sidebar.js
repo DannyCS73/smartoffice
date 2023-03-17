@@ -1,16 +1,18 @@
-import React , {useState} from "react";
+import React , {useState, useEffect} from "react";
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
 import { Typography } from "@mui/material";
 import {MdDashboard, MdVerifiedUser, MdMenu} from "react-icons/md";
-import {FaUser, FaInfoCircle, FaWallet} from "react-icons/fa";
+import {FaUser, FaInfoCircle, FaWallet, FaLock} from "react-icons/fa";
 import {HiCube} from "react-icons/hi";
 import {IoLogOut} from "react-icons/io5";
 import {AiOutlineMenuUnfold, AiOutlineMenuFold} from "react-icons/ai"
 import {useNavigate} from "react-router-dom";
+import { GrConnectivity } from "react-icons/gr";
 
 export default function NavBar(){
     const { collapseSidebar } = useProSidebar();
     const [collapsed, setCollapsed] = useState(false)
+    const [name, setName] = useState()
 
     let navigate = useNavigate(); 
 
@@ -25,6 +27,16 @@ export default function NavBar(){
     function navToValidators(){
         navigate('/validators')
     }
+
+
+    useEffect(() => {
+        console.log(JSON.parse(localStorage.getItem("USER")).company_id)
+        fetch(`http://127.0.0.1:8081/clients/${JSON.parse(localStorage.getItem("USER")).user_id}`, {
+            method: "GET"
+        }).then(res => res.json()).then(data => {
+            setName(data.name)
+        })
+    },[])
 
     return (
         <div>
@@ -44,10 +56,10 @@ export default function NavBar(){
                     <MenuItem icon={<MdDashboard/>} onClick={navToDashBoard}> 
                         Company Dashboard 
                     </MenuItem>
+                    <MenuItem icon={<FaWallet/>}>
+                        Company Wallet
+                    </MenuItem>
                     <SubMenu label="Blockchain" icon={<HiCube/>}>
-                        <MenuItem icon={<FaWallet/>}> 
-                            Company Wallet
-                        </MenuItem>
                         <MenuItem icon={<MdVerifiedUser/>} onClick={navToValidators}> 
                                 Validators
                         </MenuItem>
@@ -55,9 +67,11 @@ export default function NavBar(){
                             FAQ
                         </MenuItem>
                     </SubMenu>
-                    <MenuItem icon={<FaUser/>}> 
-                        User Profile 
-                    </MenuItem>
+                    <SubMenu label= {name} icon={<FaUser/>}> 
+                        <MenuItem icon={<FaLock/>}>
+                            Change Password
+                        </MenuItem>
+                    </SubMenu>
                     <MenuItem icon={<IoLogOut/>} onClick={navToLogOn}> 
                         Log Out 
                     </MenuItem>

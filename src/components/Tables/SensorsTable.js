@@ -6,6 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import CircleIcon from '@mui/icons-material/Circle';
 
 // placeholder data
 function SensorsTable(props) {
@@ -17,6 +18,9 @@ function SensorsTable(props) {
     name: "",
     id: ""
   });
+  const[col,setCol] = useState()
+
+  const [display, setDisplay] = useState()
 
   function handleDelOpen(){
     setDel(true)
@@ -45,26 +49,53 @@ function SensorsTable(props) {
     })
   }
 
+
+  function getActivity(id){
+    return fetch(`http://127.0.0.1:8081/sensors/${id}`, {
+      method: "GET"
+    }).then(res => res.json()).then(data => {
+       return data.status
+    })
+  }
+
+
+
   useEffect(() => {
     fetch(`http://127.0.0.1:8081/companies/${loc.state.id}/sensors`, {
         method: "GET"
     }).then(res => res.json()).then(data => {
       setData(data)
-      setTableData(data.map((item) => {
+      Promise.all(data.map(item => getActivity(item.id)))
+      .then(results => {
+        setTableData(data.map((item, index) => {
+          const status = results[index]
+          var c = "success"
+          
+          if (status == "active") {
+            c = "success"
+          }else if (status == "not available"){
+            c = "primary"
+          } else {
+            c = "error"
+          }
 
-        return(
-        <tr key={item.id}>
-          <td>{item.id}</td>
-          <td>{item.name}</td>
-          <td>{item.type}</td>
-          <td>{item.unit}</td>
-          <td>{item.mqtt_topic}</td>
-          <div className="centred">
-            <td onClick= {() => handleDelete(item.name, item.id)} style={{"cursor":"pointer"}}>{<IoTrashBinSharp/>}</td>
-          </div>
-      </tr>
-      )}))
-    })
+          return (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.type}</td>
+              <td>{item.unit}</td>
+              <td>{item.mqtt_topic}</td>
+          
+              <td><CircleIcon color={c}/></td>
+              <td onClick={() => handleDelete(item.name, item.id)} style={{ cursor: "pointer" }}>
+                <IoTrashBinSharp />
+              </td>
+          </tr>
+          )
+          })
+      )
+  })})
 },[props.refresh])
 
 
@@ -78,21 +109,8 @@ function SensorsTable(props) {
     const filteredData = data.filter((item) =>
       item.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    setTableData(filteredData.map((item) => {
-      return(
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.name}</td>
-            <td>{item.type}</td>
-            <td>{item.unit}</td>
-            <td>{item.mqtt_topic}</td>
-            <div className="centred">
-              <td onClick= {() => handleDelete(item.name, item.id)} style={{"cursor":"pointer"}}>{<IoTrashBinSharp/>}</td>
-            </div>
-          </tr>
-
-           )}));
-  };
+    console.log(filteredData)
+  }
 
   // render component
   return (
@@ -112,9 +130,12 @@ function SensorsTable(props) {
             <th>Type</th>
             <th>Unit</th>
             <th>MQTT Topic</th>
+            <th>Current Status</th>
           </tr>
         </thead>
-        <tbody>{tableData}</tbody>
+        <tbody>
+          {tableData}
+        </tbody>
       </table>
 
 
@@ -126,11 +147,9 @@ function SensorsTable(props) {
         </DialogActions>
 
       </Dialog>
-
-
-
     </div>
   );
 }
+
 
 export default SensorsTable;

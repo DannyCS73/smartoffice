@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Sensors from "./components/Pages/Sensors/Sensors";
 import Users from "./components/Pages/Users/Users";
 import LogOnPage from "./components/Pages/LogOn/LogOnPage";
-import Validators from "./components/Pages/Validators/Validators";
+import Validators from "./components/Pages/Blockchain/Validators/Validators/Validators";
 
 
 const theme = createTheme({

@@ -164,8 +164,9 @@ export default function AddSensor(props){
             </DialogContentText>
         </DialogContent>
     <DialogActions>
+    <Button variant="contained" color="error" onClick={props.close}>Cancel</Button>
     <Button variant="contained" color="primary" onClick={addSensor}>Add Sensor</Button>
-      <Button variant="contained" color="error" onClick={props.close}>Cancel</Button>
+
     </DialogActions>
 
   </div>

@@ -145,5 +145,15 @@ h1{
   justify-content: center;
 }
 
+.connected{
+  color: green;
+}
+
+.centre{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vh;
+}
 
 
