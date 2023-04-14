@@ -1,0 +1,72 @@
+.Table {
+    margin: 20px;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .SearchInput {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #eee;
+  }
+  
+  .Circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  
+  .Circle--Active {
+    background-color: green;
+  }
+  
+  .Circle--Inactive {
+    background-color: red;
+  }
+  
+  .CircleWrapper {
+    text-align: center;
+  }
+
+  .centred{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .centre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vh;
+  }
+
+  .column{
+    display: flex;
+    flex-direction: column;
+    margin-right: 3vw;
+  }
+
+  .b-button{
+    width: 20vw;
+  }

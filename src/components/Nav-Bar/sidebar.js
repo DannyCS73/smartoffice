@@ -16,26 +16,26 @@ export default function NavBar(){
 
     let navigate = useNavigate(); 
 
-    function navToDashBoard(){
-      navigate('/dashboard')
-    }
+    function nav(dest){
+        navigate(`/${dest}`)
+      }
 
     function navToLogOn(){
         navigate('/')
     }
 
-    function navToValidators(){
-        navigate('/validators')
-    }
-
-
     useEffect(() => {
         console.log(JSON.parse(localStorage.getItem("USER")).company_id)
         fetch(`http://127.0.0.1:8081/clients/${JSON.parse(localStorage.getItem("USER")).user_id}`, {
             method: "GET"
-        }).then(res => res.json()).then(data => {
+        }).then(res => {
+            console.log(res)
+            return (res.json())
+        }).then(data => {
             setName(data.name)
-        })
+        }).catch(err => 
+            console.log("error")
+        )
     },[])
 
     return (
@@ -53,14 +53,11 @@ export default function NavBar(){
                 </div>
 
                 <Menu className="menu-item">
-                    <MenuItem icon={<MdDashboard/>} onClick={navToDashBoard}> 
-                        Company Dashboard 
-                    </MenuItem>
-                    <MenuItem icon={<FaWallet/>}>
-                        Company Wallet
+                    <MenuItem icon={<MdDashboard/>} onClick={() => nav("dashboard")}> 
+                        Dashboard 
                     </MenuItem>
                     <SubMenu label="Blockchain" icon={<HiCube/>}>
-                        <MenuItem icon={<MdVerifiedUser/>} onClick={navToValidators}> 
+                        <MenuItem icon={<MdVerifiedUser/>} onClick={() => nav("validators")}> 
                                 Validators
                         </MenuItem>
                         <MenuItem icon={<FaInfoCircle/>}> 

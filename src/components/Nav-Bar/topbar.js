@@ -8,13 +8,14 @@ import Menu from '@mui/material/Menu';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddSensor from '../Pages/Sensors/AddSensor';
 import Dialog from '@mui/material/Dialog';
+import AddRoom from '../Pages/Rooms/AddRoom';
 
 
 export default function TopBar(props){
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sensorOpen, setSensorOpen] = React.useState()
-  const [userOpen, setUserOpen] = React.useState()
+  const [roomOpen, setRoomOpen] = React.useState()
 
 
   const handleMenu = (event) => {
@@ -33,12 +34,12 @@ export default function TopBar(props){
     setSensorOpen(false)
   }
 
-  function handleNewUserOpen(){
-    setUserOpen(true)
+  function handleNewRoomOpen(){
+    setRoomOpen(true)
   }
 
-  function handleNewUserClose(){
-    setUserOpen(false)
+  function handleNewRoomClose(){
+    setRoomOpen(false)
   }
 
   
@@ -64,12 +65,20 @@ export default function TopBar(props){
             onClose={handleClose}
           > 
              {props.title === "Sensors" && <MenuItem onClick={handleNewSensorOpen}>{props.addTitle}</MenuItem>}
-             {props.title === "Clients" && <MenuItem onClick={handleNewUserOpen}>{props.addTitle}</MenuItem>}
+             {props.title === "Rooms" && <MenuItem onClick={handleNewRoomOpen}>{props.addTitle}</MenuItem>}
           </Menu>
 
          {props.title === "Sensors" &&  <Dialog open={sensorOpen} onClose={handleNewSensorClose} fullwidth >
              <AddSensor 
               close = {handleNewSensorClose}
+              setRefresh={props.setRefresh}
+              />
+          </Dialog>
+          }
+
+          {props.title === "Rooms" &&  <Dialog open={roomOpen} onClose={handleNewRoomOpen} fullwidth >
+             <AddRoom 
+              close = {handleNewRoomClose}
               setRefresh={props.setRefresh}
               />
           </Dialog>

@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import CircleIcon from '@mui/icons-material/Circle';
+import ErrorPopup from '../ErrorPopup';
 
 // placeholder data
 function SensorsTable(props) {
@@ -21,6 +22,8 @@ function SensorsTable(props) {
   const[col,setCol] = useState()
 
   const [display, setDisplay] = useState()
+  const [apiError, setAPIError] = useState() 
+  const [errorMsg, setErrorMsg] = useState()
 
   function handleDelOpen(){
     setDel(true)
@@ -42,61 +45,91 @@ function SensorsTable(props) {
 
 
   function handleSensorDelete(){
+    var msg = ""
     fetch(`http://127.0.0.1:8081/sensors/${item.id}`,{
-      method: "DELETE"
-    }).then(res => res.json()).then(data => {
+      method: "DELETE",
+      headers: {
+        'Authorization' : `Basic ${JSON.parse(localStorage.getItem("USER")).token}`
+      }
+    }).then(res => {
+      if(!res.ok) {
+          return res.text().then(text => { throw new Error(text) })
+      }
+      else {
+          return res.json();
+      }}).then(data => {
       props.setRefresh(true)
+    }).catch(err => {
+      msg = JSON.parse(err["message"])
+      setErrorMsg(<ErrorPopup severity={"error"} message={msg["message"]} />)
     })
   }
 
 
   function getActivity(id){
     return fetch(`http://127.0.0.1:8081/sensors/${id}`, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        'Authorization' : `Basic ${JSON.parse(localStorage.getItem("USER")).token}`
+      }
     }).then(res => res.json()).then(data => {
        return data.status
-    })
+    }).catch(err => {
+      setAPIError(true)
+      setErrorMsg(String(err))
+  })
   }
 
 
-
-  useEffect(() => {
+  function setTable(){
     fetch(`http://127.0.0.1:8081/companies/${loc.state.id}/sensors`, {
-        method: "GET"
+      method: "GET",
+      headers: {
+        'Authorization' : `Basic ${JSON.parse(localStorage.getItem("USER")).token}`
+      }
     }).then(res => res.json()).then(data => {
       setData(data)
       Promise.all(data.map(item => getActivity(item.id)))
-      .then(results => {
-        setTableData(data.map((item, index) => {
-          const status = results[index]
-          var c = "success"
-          
-          if (status == "active") {
-            c = "success"
-          }else if (status == "not available"){
-            c = "primary"
-          } else {
-            c = "error"
-          }
+        .then(results => {
+          setTableData(data.map((item, index) => {
+            const status = results[index]
+            var c = "success"
+            
+            if (status == "active") {
+              c = "success"
+            }else if (status == "not available"){
+              c = "primary"
+            } else {
+              c = "error"
+            }
 
-          return (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.type}</td>
-              <td>{item.unit}</td>
-              <td>{item.mqtt_topic}</td>
-          
-              <td><CircleIcon color={c}/></td>
-              <td onClick={() => handleDelete(item.name, item.id)} style={{ cursor: "pointer" }}>
-                <IoTrashBinSharp />
-              </td>
+        return (
+          <tr key={item.id}>
+            <td>{item.id}</td>
+            <td>{item.name}</td>
+            <td>{item.type}</td>
+            <td>{item.unit}</td>
+            <td>{item.mqtt_topic}</td>
+        
+            <td><CircleIcon color={c}/></td>
+            <td onClick={() => handleDelete(item.name, item.id)} style={{ cursor: "pointer" }}>
+              <IoTrashBinSharp />
+            </td>
           </tr>
-          )
-          })
+        )}))}
       )
-  })})
-},[props.refresh])
+    }
+    ).catch(err => {
+      setAPIError(true)
+      setErrorMsg(String(err))
+  })
+  }
+
+
+    useEffect(() => {
+      setTable()
+  },[props.refresh])
+
 
 
   // state variables
@@ -115,13 +148,6 @@ function SensorsTable(props) {
   // render component
   return (
     <div className="Table">
-      <input
-        type="text"
-        placeholder="Search by Sensor name..."
-        value={searchTerm}
-        onChange={handleSearchTermChange}
-        className="SearchInput"
-      />
       <table>
         <thead>
           <tr>
@@ -131,6 +157,7 @@ function SensorsTable(props) {
             <th>Unit</th>
             <th>MQTT Topic</th>
             <th>Current Status</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -145,6 +172,7 @@ function SensorsTable(props) {
           <Button variant="contained" color="primary" onClick={handleDelClosed}>Back</Button>
           <Button variant="contained" color="error" onClick={handleSensorDelete}>Delete</Button>
         </DialogActions>
+        {errorMsg}
 
       </Dialog>
     </div>

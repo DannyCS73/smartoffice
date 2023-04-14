@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,6 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { MenuItem } from "@mui/material";
+import ErrorPopup from "../../ErrorPopup";
+
 
 import "./sensors.css"
 
@@ -14,7 +16,6 @@ const types = [
     {
         name: "Temperature Sensor",
         unit: "C"
-        
     }
 ]
 
@@ -24,13 +25,18 @@ const typesDict =
     }
 
 export default function AddSensor(props){
+
+    const [errorMsg, setErrorMsg] = useState()
     
 
     const [rooms, setRooms] = React.useState()
     useEffect(() => {
         console.log(JSON.parse(localStorage.getItem("USER")).company_id)
         fetch(`http://127.0.0.1:8081/companies/${JSON.parse(localStorage.getItem("USER")).company_id}/rooms`, {
-            method: "GET"
+            method: "GET",
+            headers:{
+                'Authorization' : `Basic ${JSON.parse(localStorage.getItem("USER")).token}`
+            }
         }).then(res => res.json()).then(data => {
             setRooms(data.map((item) => (
                 <MenuItem key={item.name} value={item.id}> 
@@ -42,12 +48,14 @@ export default function AddSensor(props){
 
 
     function addSensor(event){
+        var msg = ""
         event.preventDefault()
         fetch(`http://127.0.0.1:8081/sensors`, { //post a new user to the API for verification.
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization' : `Basic ${JSON.parse(localStorage.getItem("USER")).token}`
             },
         body: JSON.stringify(
             {
@@ -64,10 +72,13 @@ export default function AddSensor(props){
                 return res.json();
             }}).then(data => {
                 console.log(data)
+                props.setRefresh(true)
             }).catch(err => {
+                msg = JSON.parse(err["message"])
+                setErrorMsg(<ErrorPopup severity={"error"} message={msg["message"]} />)
             })
         
-            props.setRefresh(true)
+            
         }
 
     
@@ -168,6 +179,7 @@ export default function AddSensor(props){
     <Button variant="contained" color="primary" onClick={addSensor}>Add Sensor</Button>
 
     </DialogActions>
+    {errorMsg}
 
   </div>
     )

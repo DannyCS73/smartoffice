@@ -149,11 +149,27 @@ h1{
   color: green;
 }
 
+.disconnected{
+  color: red;
+}
+
+
 .centre{
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 2vh;
+}
+
+
+.transaction{
+  margin-left: 3vw;
+  margin-right: 3vw;
+  margin-top: 1vh;
+}
+
+.balance-container{
+  margin-bottom: 10vh;
 }
 
 

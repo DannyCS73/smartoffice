@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@mui/material';
 import base64 from 'react-native-base64'
 import { useNavigate } from "react-router-dom";
+import ErrorPopup from '../../ErrorPopup';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,6 +43,7 @@ export default function LogOnPage() {
     password: ""
 })
 let navigate = useNavigate();
+const [errorUI ,setErrorUI] = useState()
 
 function handleChange(event){
     const {name, value} = event.target
@@ -68,8 +70,19 @@ function handleSubmit(event){
       })
   .then(data => {
       localStorage.setItem("USER", JSON.stringify(data))
-      navigate('/dashboard')
+      if(data["is_company_landlord"] == true){
+        if (data["is_admin"] == true){
+          navigate('/admin')
+        } else {
+          navigate('/landlord')
+        }
+      } else {
+        navigate('/dashboard')
+      }
       
+  }).catch(error => {
+    console.log(error)
+    setErrorUI(<ErrorPopup severity={"warning"} message={String(error)}/>)
   })
 }
 
@@ -105,6 +118,7 @@ function handleSubmit(event){
           </Button>
         </form>
       </div>
+      {errorUI}
     </div>
   );
 }

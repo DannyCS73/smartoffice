@@ -28,31 +28,9 @@ function UsersTable() {
     })
 },[])
 
-  // handle search term change
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-    const filteredData = data.filter((item) =>
-      item.name.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-    setTableData(filteredData.map((item) => {
-      return(
-      <tr key={item.id}>
-        <td>{item.id}</td>
-        <td>{item.name}</td>
-    </tr>
-    )}));
-  };
-
   // render component
   return (
     <div className="Table">
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={searchTerm}
-        onChange={handleSearchTermChange}
-        className="SearchInput"
-      />
       <table>
         <thead>
           <tr>

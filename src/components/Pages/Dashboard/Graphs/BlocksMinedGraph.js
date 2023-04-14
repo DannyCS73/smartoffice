@@ -1,94 +1,22 @@
-import React from "react";
-import { BiUpArrowCircle } from "react-icons/bi";
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import {FaUser, FaInfoCircle, FaWallet} from "react-icons/fa";
-import {Line} from "react-chartjs-2"
-import {
-    Chart as ChartJs,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    Title,
-    Tooltip
-} from 'chart.js'
-import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 
-ChartJs.register(
-    Title,
-    Tooltip,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-)
-
-
+import { Typography, Card } from "@mui/material";
+import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 function BlocksMinedGraph(){
 
-    const labels = ["Jan", "Feb", "March", "April", "May", "June", "Jul", "Aug"];
-    const data = {
-      labels: labels,
-      datasets: [{
-        label: 'Blocks Mined',
-        data: [1, 6, 5, 7, 2, 5, 5],
-        fill: false,
-        borderColor: "black",
-        tension: 0.3
-      }]
-    };
-
-    const options = {
-        interaction: {
-            mode: 'index',
-            intersect: false,
-          },
-        scales:{
-            x: {
-                grid: {
-                    display: false
-                }
-            },
-            y : {
-                min: 0,
-                max: 15,
-                ticks: {
-                    stepSize: 5
-                }
-            }
-        },
-            plugins: {
-              legend: {
-                display: false
-              },
-              tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        let label = context.dataset.label || '';
-
-                        if (label) {
-                            label += ': ';
-                        }
-                        if (context.parsed.y !== null) {
-                            label += context.parsed.y;
-                        }
-                        return label;
-                    }
-                }
-            }
-        }
-    }
-
-
-
     return (
         <div>
-            <Card className="widget-graph" sx={{ minWidth: 275 }} >
-                <Typography variant="h5" className="graph-title">Blocks Mined</Typography>
-                <Line data={data} options={options}></Line>
+            <Card className="widget" sx={{ minWidth: 275 , minHeight: 325, maxHeight: 325, overflow: "scroll"}}>  
+                <Typography variant="h5" className="graph-title">Tokens Earned</Typography>
+                <div style={{"display" : "flex"}}>
+                  <Sparklines data={[0, 1, 0, 0, 1, 0, 1, 0,1,1]} height={40}>
+                    <SparklinesLine color="blue" />
+                  </Sparklines>
+                </div>
+                
+              
+
                 <div style={{"margin":"auto", "textAlign":"center"}}>
                 </div>
             </Card>

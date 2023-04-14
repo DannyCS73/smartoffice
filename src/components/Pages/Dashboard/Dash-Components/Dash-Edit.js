@@ -1,9 +1,20 @@
 import React from "react";
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
-export default function EditWidget(){
+export default function EditWidget(props){
+
+  let navigate = useNavigate(); 
+
+  function navToRoomsPage(){
+    navigate('/rooms' , {state:{
+      id: props.company_id
+  }})
+  }
+
+
     return(    
-      <div >
+      <div onClick={navToRoomsPage}>
       <Card className="widget" sx={{ minWidth: 275 }} 
               style={{"backgroundImage": "url(/assets/building.png)" , 
                       "backgroundSize": "150px", 
@@ -12,11 +23,11 @@ export default function EditWidget(){
       <CardContent >
           <div className="widget-title">
               <Typography variant="h4">
-                  Buildings
+                  Rooms
               </Typography>
           </div>
         <Typography variant="h1" style={{'cursor': 'pointer'}}>
-          1
+          {props.num}
         </Typography>
       </CardContent>
     </Card> 
